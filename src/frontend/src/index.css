@@ -1,0 +1,326 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap");
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark luxury theme — black/gold/white */
+    --background: 10 0 0;
+    --foreground: 98 0 0;
+
+    --card: 12 0 0;
+    --card-foreground: 98 0 0;
+
+    --popover: 12 0 0;
+    --popover-foreground: 98 0 0;
+
+    /* Gold primary */
+    --primary: 0.72 0.12 78;
+    --primary-foreground: 10 0 0;
+
+    --secondary: 18 0 0;
+    --secondary-foreground: 98 0 0;
+
+    --muted: 18 0 0;
+    --muted-foreground: 65 0 0;
+
+    --accent: 0.72 0.12 78;
+    --accent-foreground: 10 0 0;
+
+    --destructive: 0.55 0.22 29;
+    --destructive-foreground: 98 0 0;
+
+    --border: 22 0 0;
+    --input: 22 0 0;
+    --ring: 0.72 0.12 78;
+
+    --radius: 0px;
+
+    /* Chart colors */
+    --chart-1: 0.72 0.12 78;
+    --chart-2: 0.55 0.08 78;
+    --chart-3: 0.65 0 0;
+    --chart-4: 0.85 0 0;
+    --chart-5: 0.45 0 0;
+
+    /* Sidebar */
+    --sidebar: 8 0 0;
+    --sidebar-foreground: 98 0 0;
+    --sidebar-primary: 0.72 0.12 78;
+    --sidebar-primary-foreground: 10 0 0;
+    --sidebar-accent: 18 0 0;
+    --sidebar-accent-foreground: 98 0 0;
+    --sidebar-border: 22 0 0;
+    --sidebar-ring: 0.72 0.12 78;
+
+    /* Custom gold tokens */
+    --gold: oklch(0.72 0.12 78);
+    --gold-light: oklch(0.82 0.1 78);
+    --gold-dark: oklch(0.55 0.1 78);
+    --obsidian: oklch(0.1 0 0);
+    --obsidian-mid: oklch(0.15 0 0);
+    --obsidian-light: oklch(0.2 0 0);
+    --ivory: oklch(0.97 0.005 78);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--obsidian);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
+
+/* Keyframes */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(201, 168, 76, 0.6);
+  }
+}
+
+@keyframes reveal-x {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Jost", sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Cormorant Garamond", serif;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: "Cormorant Garamond", serif;
+  }
+
+  .font-sans {
+    font-family: "Jost", sans-serif;
+  }
+
+  .font-accent-italic {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-style: italic;
+  }
+
+  .text-gold {
+    color: var(--gold);
+  }
+
+  .text-gold-light {
+    color: var(--gold-light);
+  }
+
+  .bg-gold {
+    background-color: var(--gold);
+  }
+
+  .bg-obsidian {
+    background-color: var(--obsidian);
+  }
+
+  .bg-obsidian-mid {
+    background-color: var(--obsidian-mid);
+  }
+
+  .border-gold {
+    border-color: var(--gold);
+  }
+
+  .gold-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto;
+  }
+
+  .gold-divider-left {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .luxury-underline {
+    position: relative;
+  }
+
+  .luxury-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .section-label {
+    font-family: "Jost", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* Shimmer text */
+  .shimmer-text {
+    background: linear-gradient(
+      90deg,
+      var(--gold-dark) 0%,
+      var(--gold-light) 40%,
+      var(--gold) 60%,
+      var(--gold-dark) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Shimmer button */
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-shimmer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 100%
+    );
+    transform: skewX(-20deg);
+    transition: left 0s;
+  }
+
+  .btn-shimmer:hover::after {
+    left: 150%;
+    transition: left 0.6s ease;
+  }
+
+  /* Luxury card */
+  .card-luxury {
+    border: 1px solid oklch(0.2 0 0);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-luxury:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(201, 168, 76, 0.15);
+  }
+
+  /* Ornament line */
+  .ornament-line {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ornament-line::before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+
+  .ornament-line::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+
+  /* Glow pulse animation utility */
+  .animate-glow-pulse {
+    animation: glow-pulse 2.5s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 3s linear infinite;
+  }
+
+  .animate-reveal-x {
+    animation: reveal-x 0.9s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  }
+}
