@@ -22,6 +22,7 @@ export interface Inquiry {
   'name' : string,
   'isRead' : boolean,
   'email' : string,
+  'whatsappNumber' : string,
   'company' : string,
   'message' : string,
   'timestamp' : bigint,
@@ -37,6 +38,7 @@ export interface Product {
   'name' : string,
   'createdAt' : bigint,
   'description' : string,
+  'priceRange' : string,
   'category' : string,
 }
 export interface UserProfile {
@@ -76,7 +78,7 @@ export interface _SERVICE {
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
   'addProduct' : ActorMethod<
-    [string, string, string, string, Array<string>],
+    [string, string, string, string, string, Array<string>],
     bigint
   >,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
@@ -96,11 +98,11 @@ export interface _SERVICE {
   'setContentBlock' : ActorMethod<[string, string], undefined>,
   'submitCatalogueRequest' : ActorMethod<[string, string], undefined>,
   'submitInquiry' : ActorMethod<
-    [string, string, string, string, string, string, InquiryType],
+    [string, string, string, string, string, string, string, InquiryType],
     undefined
   >,
   'updateProduct' : ActorMethod<
-    [bigint, string, string, string, string, Array<string>],
+    [bigint, string, string, string, string, string, Array<string>],
     boolean
   >,
 }

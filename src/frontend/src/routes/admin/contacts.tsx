@@ -15,7 +15,7 @@ import {
   useGetAllInquiries,
   useMarkInquiryRead,
 } from "@/hooks/useQueries";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 function formatDate(ts: bigint) {
@@ -89,7 +89,7 @@ export default function AdminContacts() {
                 <Skeleton
                   key={i}
                   className="h-12 mb-2"
-                  style={{ backgroundColor: "oklch(0.18 0 0)" }}
+                  style={{ backgroundColor: "oklch(0.18 0.055 240)" }}
                 />
               ))}
             </div>
@@ -97,7 +97,7 @@ export default function AdminContacts() {
             <div
               className="text-center py-16 border"
               style={{
-                borderColor: "oklch(0.22 0 0)",
+                borderColor: "oklch(0.22 0.06 240)",
                 backgroundColor: "var(--obsidian-mid)",
               }}
               data-ocid="contacts.inquiries_empty_state"
@@ -106,21 +106,22 @@ export default function AdminContacts() {
             </div>
           ) : (
             <div
-              className="border overflow-hidden"
+              className="border overflow-x-auto"
               style={{
-                borderColor: "oklch(0.22 0 0)",
+                borderColor: "oklch(0.22 0.06 240)",
                 backgroundColor: "var(--obsidian-mid)",
               }}
               data-ocid="contacts.table"
             >
               <Table>
                 <TableHeader>
-                  <TableRow style={{ borderColor: "oklch(0.22 0 0)" }}>
+                  <TableRow style={{ borderColor: "oklch(0.22 0.06 240)" }}>
                     {[
                       "Name",
                       "Email",
                       "Company",
                       "Country",
+                      "WhatsApp",
                       "Type",
                       "Date",
                       "Status",
@@ -145,7 +146,7 @@ export default function AdminContacts() {
                       key={`inq-${inq.email}-${String(inq.timestamp)}`}
                       data-ocid={`contacts.row.${i + 1}`}
                       style={{
-                        borderColor: "oklch(0.2 0 0)",
+                        borderColor: "oklch(0.28 0.065 240)",
                         backgroundColor: !inq.isRead
                           ? "oklch(0.14 0.01 78)"
                           : "transparent",
@@ -167,10 +168,35 @@ export default function AdminContacts() {
                         {inq.country}
                       </TableCell>
                       <TableCell>
+                        {inq.whatsappNumber ? (
+                          <a
+                            href={`https://wa.me/${inq.whatsappNumber}?text=Hi%20${encodeURIComponent(inq.name)}%2C%20regarding%20your%20jewellery%20inquiry...`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Button
+                              data-ocid={`contacts.secondary_button.${i + 1}`}
+                              size="sm"
+                              className="h-7 text-xs px-2 gap-1"
+                              style={{
+                                backgroundColor: "oklch(0.45 0.18 145)",
+                                color: "white",
+                                borderRadius: 0,
+                              }}
+                            >
+                              <MessageCircle size={11} />
+                              {inq.whatsappNumber}
+                            </Button>
+                          </a>
+                        ) : (
+                          <span className="text-xs text-foreground/30">—</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
                         <Badge
                           className="text-xs"
                           style={{
-                            backgroundColor: "oklch(0.18 0 0)",
+                            backgroundColor: "oklch(0.18 0.055 240)",
                             color: "var(--gold)",
                             borderColor: "var(--gold)",
                             borderRadius: 0,
@@ -239,7 +265,7 @@ export default function AdminContacts() {
                 <Skeleton
                   key={i}
                   className="h-12 mb-2"
-                  style={{ backgroundColor: "oklch(0.18 0 0)" }}
+                  style={{ backgroundColor: "oklch(0.18 0.055 240)" }}
                 />
               ))}
             </div>
@@ -247,7 +273,7 @@ export default function AdminContacts() {
             <div
               className="text-center py-16 border"
               style={{
-                borderColor: "oklch(0.22 0 0)",
+                borderColor: "oklch(0.22 0.06 240)",
                 backgroundColor: "var(--obsidian-mid)",
               }}
               data-ocid="contacts.catalogue_empty_state"
@@ -260,14 +286,14 @@ export default function AdminContacts() {
             <div
               className="border overflow-hidden"
               style={{
-                borderColor: "oklch(0.22 0 0)",
+                borderColor: "oklch(0.22 0.06 240)",
                 backgroundColor: "var(--obsidian-mid)",
               }}
               data-ocid="contacts.table"
             >
               <Table>
                 <TableHeader>
-                  <TableRow style={{ borderColor: "oklch(0.22 0 0)" }}>
+                  <TableRow style={{ borderColor: "oklch(0.22 0.06 240)" }}>
                     {["Name", "Email", "Date"].map((h) => (
                       <TableHead
                         key={h}
@@ -287,7 +313,7 @@ export default function AdminContacts() {
                     <TableRow
                       key={`cat-${req.email}-${String(req.timestamp)}`}
                       data-ocid={`contacts.row.${i + 1}`}
-                      style={{ borderColor: "oklch(0.2 0 0)" }}
+                      style={{ borderColor: "oklch(0.28 0.065 240)" }}
                     >
                       <TableCell
                         className="text-sm"

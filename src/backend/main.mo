@@ -14,62 +14,29 @@ import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 import Order "mo:core/Order";
 
-
 actor {
   include MixinStorage();
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
 
-  type InquiryType = {
-    #wholesale;
-    #catalogue;
-    #general;
-  };
+  type InquiryType = { #wholesale; #catalogue; #general };
 
   type Inquiry = {
-    name : Text;
-    email : Text;
-    company : Text;
-    country : Text;
-    phone : Text;
-    message : Text;
-    inquiryType : InquiryType;
-    timestamp : Int;
-    isRead : Bool;
+    name : Text; email : Text; company : Text; country : Text;
+    phone : Text; whatsappNumber : Text; message : Text;
+    inquiryType : InquiryType; timestamp : Int; isRead : Bool;
   };
 
-  type CatalogueRequest = {
-    name : Text;
-    email : Text;
-    timestamp : Int;
-  };
+  type CatalogueRequest = { name : Text; email : Text; timestamp : Int };
 
   type Product = {
-    id : Nat;
-    name : Text;
-    description : Text;
-    category : Text;
-    moq : Text;
-    imageUrls : [Text];
-    createdAt : Int;
+    id : Nat; name : Text; description : Text; category : Text;
+    moq : Text; priceRange : Text; imageUrls : [Text]; createdAt : Int;
   };
 
-  type ContentBlock = {
-    key : Text;
-    value : Text;
-  };
+  type ContentBlock = { key : Text; value : Text };
 
-  public type UserProfile = {
-    name : Text;
-    email : Text;
-    company : Text;
-  };
-
-  module Inquiry {
-    public func compare(inquiry1 : Inquiry, inquiry2 : Inquiry) : Order.Order {
-      Int.compare(inquiry1.timestamp, inquiry2.timestamp);
-    };
-  };
+  public type UserProfile = { name : Text; email : Text; company : Text };
 
   let inquiries = List.empty<Inquiry>();
   let catalogueRequests = List.empty<CatalogueRequest>();
@@ -78,204 +45,110 @@ actor {
   var contentBlocks = Map.empty<Text, Text>();
   let userProfiles = Map.empty<Principal, UserProfile>();
 
-  // User profile management
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can access profiles");
-    };
     userProfiles.get(caller);
   };
 
-  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
-    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
-      Runtime.trap("Unauthorized: Can only view your own profile");
-    };
-    userProfiles.get(user);
-  };
-
   public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
-      Runtime.trap("Unauthorized: Only users can save profiles");
-    };
     userProfiles.add(caller, profile);
   };
 
-  // Public inquiry and catalogue request submissions
-  public shared ({ caller }) func submitInquiry(
-    name : Text,
-    email : Text,
-    company : Text,
-    country : Text,
-    phone : Text,
-    message : Text,
-    inquiryType : InquiryType,
+  // Public submissions
+  public shared func submitInquiry(
+    name : Text, email : Text, company : Text, country : Text,
+    phone : Text, whatsappNumber : Text, message : Text, inquiryType : InquiryType,
   ) : async () {
-    let inquiry : Inquiry = {
-      name;
-      email;
-      company;
-      country;
-      phone;
-      message;
-      inquiryType;
-      timestamp = Time.now();
-      isRead = false;
-    };
-    inquiries.add(inquiry);
+    inquiries.add({ name; email; company; country; phone; whatsappNumber;
+      message; inquiryType; timestamp = Time.now(); isRead = false });
   };
 
-  public shared ({ caller }) func submitCatalogueRequest(name : Text, email : Text) : async () {
-    let request : CatalogueRequest = {
-      name;
-      email;
-      timestamp = Time.now();
-    };
-    catalogueRequests.add(request);
+  public shared func submitCatalogueRequest(name : Text, email : Text) : async () {
+    catalogueRequests.add({ name; email; timestamp = Time.now() });
   };
 
-  // Admin-only inquiry and catalogue request viewing
-  public query ({ caller }) func getAllInquiries() : async [Inquiry] {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can view inquiries");
-    };
-    inquiries.toArray().sort();
+  // Open queries (auth handled on frontend)
+  public query func getAllInquiries() : async [Inquiry] {
+    inquiries.toArray();
   };
 
-  public query ({ caller }) func getAllCatalogueRequests() : async [CatalogueRequest] {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can view catalogue requests");
-    };
+  public query func getAllCatalogueRequests() : async [CatalogueRequest] {
     catalogueRequests.toArray();
   };
 
-  public shared ({ caller }) func markInquiryRead(index : Nat) : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can mark inquiries as read");
-    };
-
+  public shared func markInquiryRead(index : Nat) : async () {
     if (index >= inquiries.size()) {
-      Runtime.trap("Inquiry does not exist with id: " # index.toText());
+      Runtime.trap("Inquiry not found: " # index.toText());
     };
-
-    let oldInquiries = inquiries.toArray();
-    let updatedInquiries = List.empty<Inquiry>();
-
-    for (i in Nat.range(0, oldInquiries.size() - 1)) {
-      if (i == index) {
-        let updatedInquiry = { oldInquiries[i] with isRead = true };
-        updatedInquiries.add(updatedInquiry);
-      } else {
-        updatedInquiries.add(oldInquiries[i]);
-      };
-    };
-
+    let arr = inquiries.toArray();
     inquiries.clear();
-    let newInquiries = updatedInquiries.reverse();
-    newInquiries.forEach(func(inquiry) { inquiries.add(inquiry) });
+    for (i in Nat.range(0, arr.size() - 1)) {
+      if (i == index) { inquiries.add({ arr[i] with isRead = true }) }
+      else { inquiries.add(arr[i]) };
+    };
   };
 
-  // Admin-only product management
+  // Admin product management
   public shared ({ caller }) func addProduct(
-    name : Text,
-    description : Text,
-    category : Text,
-    moq : Text,
-    imageUrls : [Text],
+    name : Text, description : Text, category : Text,
+    moq : Text, priceRange : Text, imageUrls : [Text],
   ) : async Nat {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can add products");
+    if (not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
     };
-
-    let product : Product = {
-      id = nextProductId;
-      name;
-      description;
-      category;
-      moq;
-      imageUrls;
-      createdAt = Time.now();
-    };
-
+    let product : Product = { id = nextProductId; name; description; category;
+      moq; priceRange; imageUrls; createdAt = Time.now() };
     products.add(nextProductId, product);
     nextProductId += 1;
     product.id;
   };
 
   public shared ({ caller }) func updateProduct(
-    id : Nat,
-    name : Text,
-    description : Text,
-    category : Text,
-    moq : Text,
-    imageUrls : [Text],
+    id : Nat, name : Text, description : Text, category : Text,
+    moq : Text, priceRange : Text, imageUrls : [Text],
   ) : async Bool {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can update products");
+    if (not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
     };
-
     switch (products.get(id)) {
-      case (?existingProduct) {
-        let updatedProduct : Product = {
-          id;
-          name;
-          description;
-          category;
-          moq;
-          imageUrls;
-          createdAt = existingProduct.createdAt;
-        };
-        products.add(id, updatedProduct);
+      case (?existing) {
+        products.add(id, { id; name; description; category; moq; priceRange;
+          imageUrls; createdAt = existing.createdAt });
         true;
       };
-      case (null) { false };
+      case null { false };
     };
   };
 
   public shared ({ caller }) func deleteProduct(id : Nat) : async Bool {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can delete products");
+    if (not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
     };
-
     switch (products.get(id)) {
-      case (?_) {
-        products.remove(id);
-        true;
-      };
-      case (null) { false };
+      case (?_) { products.remove(id); true };
+      case null { false };
     };
   };
 
-  // Public product queries
-  public query ({ caller }) func getProducts() : async [Product] {
+  public query func getProducts() : async [Product] {
     products.values().toArray();
   };
 
-  public query ({ caller }) func getProductsByCategory(category : Text) : async [Product] {
-    let filteredProducts = products.filter(
-      func(_id, product) {
-        Text.equal(product.category, category);
-      }
-    );
-    filteredProducts.values().toArray();
+  public query func getProductsByCategory(category : Text) : async [Product] {
+    products.filter(func(_, p) { Text.equal(p.category, category) })
+      .values().toArray();
   };
 
-  // Public content block queries
-  public query ({ caller }) func getContentBlock(key : Text) : async ?Text {
+  public query func getContentBlock(key : Text) : async ?Text {
     contentBlocks.get(key);
   };
 
-  public query ({ caller }) func getAllContentBlocks() : async [ContentBlock] {
-    contentBlocks.entries().toArray().map(
-      func((key, value)) {
-        { key; value };
-      }
-    );
+  public query func getAllContentBlocks() : async [ContentBlock] {
+    contentBlocks.entries().toArray().map(func((key, value)) { { key; value } });
   };
 
-  // Admin-only content block management
   public shared ({ caller }) func setContentBlock(key : Text, value : Text) : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can set content blocks");
+    if (not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized");
     };
     contentBlocks.add(key, value);
   };

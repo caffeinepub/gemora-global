@@ -19,7 +19,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-5">
               <img
-                src="/assets/uploads/Gemini_Generated_Image_ubdf1aubdf1aubdf-removebg-preview-1--1.png"
+                src="/assets/uploads/Gemini_Generated_Image_ubdf1aubdf1aubdf-removebg-preview-1-1-1.png"
                 alt="Gemora Global"
                 className="h-10 w-10 object-contain"
               />
@@ -34,7 +34,7 @@ export default function Footer() {
               Premium imitation jewellery manufacturer and exporter from Jaipur,
               India. Trusted by wholesalers and boutiques worldwide.
             </p>
-            <div className="mt-6 pt-6 border-t border-[oklch(0.18_0_0)]">
+            <div className="mt-6 pt-6 border-t border-[oklch(0.18_0.055_240)]">
               <p className="text-xs text-foreground/30 tracking-widest uppercase">
                 Jaipur, Rajasthan, India
               </p>
@@ -107,7 +107,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-[oklch(0.18_0_0)] flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-8 border-t border-[oklch(0.18_0.055_240)] flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-foreground/30 tracking-wider">
             © {year} Gemora Global. All rights reserved.
           </p>

@@ -1,4 +1,4 @@
-import logoUrl from "@/assets/uploads/Gemini_Generated_Image_ubdf1aubdf1aubdf-removebg-preview-1--1.png";
+import logoUrl from "@/assets/uploads/Gemini_Generated_Image_ubdf1aubdf1aubdf-removebg-preview-1-1-1.png";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
@@ -30,14 +30,13 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "shadow-md border-b border-[oklch(0.88_0.04_85)] backdrop-blur-sm"
-          : "border-b border-[oklch(0.92_0.02_85)]"
+        scrolled ? "shadow-md border-b backdrop-blur-sm" : "border-b"
       }`}
       style={{
         backgroundColor: scrolled
-          ? "oklch(0.98 0.01 85 / 0.92)"
-          : "oklch(0.98 0.01 85)",
+          ? "oklch(0.28 0.065 240 / 0.92)"
+          : "oklch(0.28 0.065 240)",
+        borderColor: "oklch(0.30 0.07 210 / 0.5)",
       }}
     >
       <div className="container mx-auto px-6 flex items-center justify-between h-20">
@@ -50,7 +49,7 @@ export default function Navbar() {
           />
           <span
             className="text-xl font-serif tracking-widest"
-            style={{ color: "oklch(0.35 0.05 50)", letterSpacing: "0.15em" }}
+            style={{ color: "oklch(0.92 0.02 80)", letterSpacing: "0.15em" }}
           >
             Gemora Global
           </span>
@@ -64,7 +63,7 @@ export default function Navbar() {
               to={link.to}
               data-ocid={link.ocid}
               className="text-xs font-sans tracking-widest uppercase transition-colors duration-200 relative"
-              style={{ letterSpacing: "0.15em", color: "oklch(0.4 0.03 50)" }}
+              style={{ letterSpacing: "0.15em", color: "oklch(0.78 0.04 210)" }}
               activeProps={{ style: { color: "var(--gold)" } }}
               onMouseEnter={() => setHoveredLink(link.to)}
               onMouseLeave={() => setHoveredLink(null)}
@@ -77,7 +76,7 @@ export default function Navbar() {
                   left: 0,
                   height: "1px",
                   width: hoveredLink === link.to ? "100%" : "0%",
-                  backgroundColor: "var(--gold)",
+                  backgroundColor: "var(--teal)",
                   transition: "width 0.3s ease",
                   display: "block",
                 }}
@@ -90,9 +89,9 @@ export default function Navbar() {
               className="text-xs tracking-widest uppercase h-9 px-5 btn-shimmer"
               style={{
                 backgroundColor: "var(--gold)",
-                color: "white",
+                color: "oklch(0.15 0.05 240)",
                 fontFamily: "'Jost', sans-serif",
-                fontWeight: 500,
+                fontWeight: 600,
                 letterSpacing: "0.15em",
                 borderRadius: 0,
               }}
@@ -107,7 +106,7 @@ export default function Navbar() {
           type="button"
           data-ocid="nav.mobile_menu_toggle"
           className="lg:hidden p-2"
-          style={{ color: "oklch(0.35 0.05 50)" }}
+          style={{ color: "oklch(0.78 0.04 210)" }}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -124,8 +123,8 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="lg:hidden border-t"
             style={{
-              backgroundColor: "oklch(0.97 0.01 85)",
-              borderColor: "oklch(0.88 0.04 85)",
+              backgroundColor: "oklch(0.30 0.07 240)",
+              borderColor: "oklch(0.30 0.07 210 / 0.5)",
             }}
           >
             <nav className="flex flex-col px-6 py-4 gap-4">
@@ -136,7 +135,7 @@ export default function Navbar() {
                   className="text-xs tracking-widest uppercase transition-colors py-1"
                   style={{
                     letterSpacing: "0.15em",
-                    color: "oklch(0.4 0.03 50)",
+                    color: "oklch(0.78 0.04 210)",
                   }}
                   onClick={() => setMenuOpen(false)}
                 >
@@ -148,8 +147,8 @@ export default function Navbar() {
                   className="text-xs tracking-widest uppercase h-9 w-full"
                   style={{
                     backgroundColor: "var(--gold)",
-                    color: "white",
-                    fontWeight: 500,
+                    color: "oklch(0.15 0.05 240)",
+                    fontWeight: 600,
                     letterSpacing: "0.15em",
                     borderRadius: 0,
                   }}

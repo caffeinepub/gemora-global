@@ -34,6 +34,48 @@ const CONTENT_FIELDS = [
     hint: "Short tagline used across the site",
     rows: 1,
   },
+  {
+    key: "export_page_title",
+    label: "Export Page Title",
+    hint: "Main title on Wholesale & Export page",
+    rows: 1,
+  },
+  {
+    key: "export_page_description",
+    label: "Export Page Description",
+    hint: "Description on export page",
+    rows: 3,
+  },
+  {
+    key: "contact_phone",
+    label: "Phone Number",
+    hint: "Contact phone shown on Contact page",
+    rows: 1,
+  },
+  {
+    key: "contact_email",
+    label: "Email Address",
+    hint: "Contact email shown on site",
+    rows: 1,
+  },
+  {
+    key: "contact_address",
+    label: "Address",
+    hint: "Company address shown on Contact page",
+    rows: 2,
+  },
+  {
+    key: "whatsapp_number",
+    label: "WhatsApp Number",
+    hint: "WhatsApp number for floating chat button (with country code, e.g. 917976341419)",
+    rows: 1,
+  },
+  {
+    key: "catalogue_pdf_url",
+    label: "Catalogue PDF URL",
+    hint: "Direct URL to downloadable catalogue PDF",
+    rows: 1,
+  },
 ];
 
 export default function AdminContent() {
@@ -49,7 +91,6 @@ export default function AdminContent() {
       for (const b of blocks) {
         map[b.key] = b.value;
       }
-      // Initialize with defaults if not set
       for (const f of CONTENT_FIELDS) {
         if (!(f.key in map)) map[f.key] = "";
       }
@@ -65,15 +106,12 @@ export default function AdminContent() {
       for (const b of blocks ?? []) {
         origMap[b.key] = b.value;
       }
-
       const changed = CONTENT_FIELDS.filter(
         (f) => values[f.key] !== (origMap[f.key] ?? ""),
       );
-
       await Promise.all(
         changed.map((f) => actor.setContentBlock(f.key, values[f.key] ?? "")),
       );
-
       qc.invalidateQueries({ queryKey: ["contentBlocks"] });
       toast.success(
         changed.length > 0 ? "Content saved" : "No changes to save",
@@ -129,7 +167,7 @@ export default function AdminContent() {
             <Skeleton
               key={i}
               className="h-24"
-              style={{ backgroundColor: "oklch(0.18 0 0)" }}
+              style={{ backgroundColor: "oklch(0.18 0.055 240)" }}
             />
           ))}
         </div>
@@ -138,7 +176,7 @@ export default function AdminContent() {
           className="border p-8"
           style={{
             backgroundColor: "var(--obsidian-mid)",
-            borderColor: "oklch(0.22 0 0)",
+            borderColor: "oklch(0.22 0.06 240)",
           }}
         >
           <p className="text-sm text-foreground/50 mb-8 leading-relaxed">
@@ -175,7 +213,7 @@ export default function AdminContent() {
                   placeholder={`Enter ${field.label.toLowerCase()}...`}
                   style={{
                     backgroundColor: "var(--obsidian)",
-                    borderColor: "oklch(0.25 0 0)",
+                    borderColor: "oklch(0.30 0.06 240)",
                     borderRadius: 0,
                     resize: "vertical",
                   }}

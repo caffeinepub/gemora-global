@@ -28,6 +28,26 @@ import { toast } from "sonner";
 const STATIC_IMAGES = [
   { src: imgHeroCollection, label: "Featured Collection", filter: "all" },
   { src: imgNecklaces, label: "Necklaces", filter: "necklaces" },
+  {
+    src: "/assets/generated/catalogue-silver-crystal-necklace-set.dim_800x800.jpg",
+    label: "Silver Crystal Necklace Set",
+    filter: "necklaces",
+  },
+  {
+    src: "/assets/generated/catalogue-gold-knot-necklace-set.dim_800x800.jpg",
+    label: "Gold Knot Necklace Set",
+    filter: "necklaces",
+  },
+  {
+    src: "/assets/generated/catalogue-gold-starfish-necklace-set.dim_800x800.jpg",
+    label: "Gold Starfish Necklace Set",
+    filter: "necklaces",
+  },
+  {
+    src: "/assets/generated/catalogue-colorful-beaded-necklace-set.dim_800x800.jpg",
+    label: "Colorful Beaded Necklace Set",
+    filter: "necklaces",
+  },
   { src: imgEarrings, label: "Earrings", filter: "earrings" },
   { src: imgBracelets, label: "Bracelets", filter: "bracelets" },
   { src: imgRings, label: "Rings", filter: "all" },
@@ -65,7 +85,9 @@ export default function GalleryPage() {
         label: p.name,
         filter: p.category.toLowerCase(),
       }));
-    return mapped.length > 0 ? mapped : STATIC_IMAGES;
+    return mapped.length > 0
+      ? [...mapped, ...STATIC_IMAGES.slice(2, 6)]
+      : STATIC_IMAGES;
   })();
 
   const filtered =
@@ -119,10 +141,12 @@ export default function GalleryPage() {
                     color:
                       activeFilter === f.id
                         ? "var(--obsidian)"
-                        : "oklch(0.65 0 0)",
+                        : "oklch(0.68 0.02 240)",
                     border: "1px solid",
                     borderColor:
-                      activeFilter === f.id ? "var(--gold)" : "oklch(0.25 0 0)",
+                      activeFilter === f.id
+                        ? "var(--gold)"
+                        : "oklch(0.30 0.06 240)",
                   }}
                 >
                   {f.label}
@@ -150,6 +174,17 @@ export default function GalleryPage() {
             </Button>
           </div>
 
+          {/* Catalogue source label */}
+          <div className="mb-6 flex items-center gap-3">
+            <span className="section-label" style={{ color: "var(--teal)" }}>
+              Layered Necklace Set Catalogue
+            </span>
+            <div
+              className="flex-1 h-px"
+              style={{ backgroundColor: "oklch(0.25 0.06 200)" }}
+            />
+          </div>
+
           {productsLoading ? (
             <div
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
@@ -159,7 +194,7 @@ export default function GalleryPage() {
                 <Skeleton
                   key={i}
                   className="aspect-square"
-                  style={{ backgroundColor: "oklch(0.18 0 0)" }}
+                  style={{ backgroundColor: "oklch(0.18 0.055 240)" }}
                 />
               ))}
             </div>
@@ -210,7 +245,7 @@ export default function GalleryPage() {
           className="max-w-md"
           style={{
             backgroundColor: "var(--obsidian-mid)",
-            borderColor: "oklch(0.25 0 0)",
+            borderColor: "oklch(0.30 0.06 240)",
             borderRadius: 0,
           }}
         >
@@ -261,7 +296,7 @@ export default function GalleryPage() {
               <div className="flex flex-col gap-2">
                 <Label
                   className="section-label"
-                  style={{ color: "oklch(0.6 0 0)" }}
+                  style={{ color: "oklch(0.68 0.02 240)" }}
                 >
                   Name
                 </Label>
@@ -272,7 +307,7 @@ export default function GalleryPage() {
                   placeholder="Your full name"
                   style={{
                     backgroundColor: "var(--obsidian)",
-                    border: "1px solid oklch(0.25 0 0)",
+                    border: "1px solid oklch(0.30 0.06 240)",
                     borderRadius: 0,
                   }}
                 />
@@ -280,7 +315,7 @@ export default function GalleryPage() {
               <div className="flex flex-col gap-2">
                 <Label
                   className="section-label"
-                  style={{ color: "oklch(0.6 0 0)" }}
+                  style={{ color: "oklch(0.68 0.02 240)" }}
                 >
                   Email
                 </Label>
@@ -292,7 +327,7 @@ export default function GalleryPage() {
                   placeholder="your@email.com"
                   style={{
                     backgroundColor: "var(--obsidian)",
-                    border: "1px solid oklch(0.25 0 0)",
+                    border: "1px solid oklch(0.30 0.06 240)",
                     borderRadius: 0,
                   }}
                 />

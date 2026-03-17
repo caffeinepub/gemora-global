@@ -115,6 +115,7 @@ export interface Inquiry {
     name: string;
     isRead: boolean;
     email: string;
+    whatsappNumber: string;
     company: string;
     message: string;
     timestamp: bigint;
@@ -132,6 +133,7 @@ export interface Product {
     name: string;
     createdAt: bigint;
     description: string;
+    priceRange: string;
     category: string;
 }
 export enum InquiryType {
@@ -152,7 +154,7 @@ export interface backendInterface {
     _caffeineStorageRefillCashier(refillInformation: _CaffeineStorageRefillInformation | null): Promise<_CaffeineStorageRefillResult>;
     _caffeineStorageUpdateGatewayPrincipals(): Promise<void>;
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
-    addProduct(name: string, description: string, category: string, moq: string, imageUrls: Array<string>): Promise<bigint>;
+    addProduct(name: string, description: string, category: string, moq: string, priceRange: string, imageUrls: Array<string>): Promise<bigint>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteProduct(id: bigint): Promise<boolean>;
     getAllCatalogueRequests(): Promise<Array<CatalogueRequest>>;
@@ -169,8 +171,8 @@ export interface backendInterface {
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     setContentBlock(key: string, value: string): Promise<void>;
     submitCatalogueRequest(name: string, email: string): Promise<void>;
-    submitInquiry(name: string, email: string, company: string, country: string, phone: string, message: string, inquiryType: InquiryType): Promise<void>;
-    updateProduct(id: bigint, name: string, description: string, category: string, moq: string, imageUrls: Array<string>): Promise<boolean>;
+    submitInquiry(name: string, email: string, company: string, country: string, phone: string, whatsappNumber: string, message: string, inquiryType: InquiryType): Promise<void>;
+    updateProduct(id: bigint, name: string, description: string, category: string, moq: string, priceRange: string, imageUrls: Array<string>): Promise<boolean>;
 }
 import type { Inquiry as _Inquiry, InquiryType as _InquiryType, UserProfile as _UserProfile, UserRole as _UserRole, _CaffeineStorageRefillInformation as __CaffeineStorageRefillInformation, _CaffeineStorageRefillResult as __CaffeineStorageRefillResult } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
@@ -273,17 +275,17 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async addProduct(arg0: string, arg1: string, arg2: string, arg3: string, arg4: Array<string>): Promise<bigint> {
+    async addProduct(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: Array<string>): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.addProduct(arg0, arg1, arg2, arg3, arg4);
+                const result = await this.actor.addProduct(arg0, arg1, arg2, arg3, arg4, arg5);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.addProduct(arg0, arg1, arg2, arg3, arg4);
+            const result = await this.actor.addProduct(arg0, arg1, arg2, arg3, arg4, arg5);
             return result;
         }
     }
@@ -511,31 +513,31 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async submitInquiry(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: InquiryType): Promise<void> {
+    async submitInquiry(arg0: string, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: string, arg7: InquiryType): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.submitInquiry(arg0, arg1, arg2, arg3, arg4, arg5, to_candid_InquiryType_n19(this._uploadFile, this._downloadFile, arg6));
+                const result = await this.actor.submitInquiry(arg0, arg1, arg2, arg3, arg4, arg5, arg6, to_candid_InquiryType_n19(this._uploadFile, this._downloadFile, arg7));
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.submitInquiry(arg0, arg1, arg2, arg3, arg4, arg5, to_candid_InquiryType_n19(this._uploadFile, this._downloadFile, arg6));
+            const result = await this.actor.submitInquiry(arg0, arg1, arg2, arg3, arg4, arg5, arg6, to_candid_InquiryType_n19(this._uploadFile, this._downloadFile, arg7));
             return result;
         }
     }
-    async updateProduct(arg0: bigint, arg1: string, arg2: string, arg3: string, arg4: string, arg5: Array<string>): Promise<boolean> {
+    async updateProduct(arg0: bigint, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: Array<string>): Promise<boolean> {
         if (this.processError) {
             try {
-                const result = await this.actor.updateProduct(arg0, arg1, arg2, arg3, arg4, arg5);
+                const result = await this.actor.updateProduct(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.updateProduct(arg0, arg1, arg2, arg3, arg4, arg5);
+            const result = await this.actor.updateProduct(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
             return result;
         }
     }
@@ -570,6 +572,7 @@ function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uin
     name: string;
     isRead: boolean;
     email: string;
+    whatsappNumber: string;
     company: string;
     message: string;
     timestamp: bigint;
@@ -580,6 +583,7 @@ function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uin
     name: string;
     isRead: boolean;
     email: string;
+    whatsappNumber: string;
     company: string;
     message: string;
     timestamp: bigint;
@@ -591,6 +595,7 @@ function from_candid_record_n12(_uploadFile: (file: ExternalBlob) => Promise<Uin
         name: value.name,
         isRead: value.isRead,
         email: value.email,
+        whatsappNumber: value.whatsappNumber,
         company: value.company,
         message: value.message,
         timestamp: value.timestamp,

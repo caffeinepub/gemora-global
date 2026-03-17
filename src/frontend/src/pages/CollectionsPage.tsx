@@ -227,7 +227,7 @@ export default function CollectionsPage() {
                         <Skeleton
                           key={i}
                           className="h-72"
-                          style={{ backgroundColor: "oklch(0.18 0 0)" }}
+                          style={{ backgroundColor: "oklch(0.18 0.055 240)" }}
                         />
                       ))}
                     </div>
@@ -239,7 +239,7 @@ export default function CollectionsPage() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: i * 0.08 }}
-                          className="border border-[oklch(0.2_0_0)] hover:border-[var(--gold)] transition-colors duration-300 group"
+                          className="border border-[oklch(0.28_0.065_240)] hover:border-[var(--gold)] transition-colors duration-300 group"
                         >
                           <div className="overflow-hidden aspect-square relative">
                             <img
@@ -309,7 +309,7 @@ export default function CollectionsPage() {
           data-ocid="inquiry_modal.dialog"
           className="max-w-md"
           style={{
-            backgroundColor: "oklch(0.18 0 0)",
+            backgroundColor: "oklch(0.18 0.055 240)",
             borderColor: "var(--gold)",
             borderRadius: 0,
           }}

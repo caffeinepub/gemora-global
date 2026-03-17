@@ -1,6 +1,5 @@
-import { useInternetIdentity } from "@/hooks/useInternetIdentity";
-import { useIsCallerAdmin } from "@/hooks/useQueries";
-import { useQueryClient } from "@tanstack/react-query";
+import { useGetAllInquiries } from "@/hooks/useQueries";
+import { clearAdminSession, getAdminSession } from "@/utils/adminAuth";
 import {
   Link,
   Outlet,
@@ -9,13 +8,20 @@ import {
 } from "@tanstack/react-router";
 import {
   BarChart3,
-  BookOpen,
-  ChevronRight,
+  ExternalLink,
+  FileText,
+  FolderOpen,
   Gem,
-  Inbox,
+  Globe,
+  Image,
   LayoutDashboard,
   LogOut,
+  MessageCircle,
+  MessageSquare,
   Package,
+  Settings,
+  ShoppingBag,
+  Users,
 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -33,42 +39,82 @@ const navItems = [
     ocid: "admin_nav.products_link",
   },
   {
-    to: "/admin/content",
-    label: "Content",
-    icon: BookOpen,
-    ocid: "admin_nav.content_link",
+    to: "/admin/categories",
+    label: "Categories",
+    icon: FolderOpen,
+    ocid: "admin_nav.categories_link",
   },
   {
-    to: "/admin/contacts",
-    label: "Contacts",
-    icon: Inbox,
-    ocid: "admin_nav.contacts_link",
+    to: "/admin/media",
+    label: "Media Library",
+    icon: Image,
+    ocid: "admin_nav.media_link",
+  },
+  {
+    to: "/admin/catalogue",
+    label: "Catalogue",
+    icon: FileText,
+    ocid: "admin_nav.catalogue_link",
+  },
+  {
+    to: "/admin/orders",
+    label: "Orders",
+    icon: ShoppingBag,
+    ocid: "admin_nav.orders_link",
+  },
+  {
+    to: "/admin/customers",
+    label: "Customers",
+    icon: Users,
+    ocid: "admin_nav.customers_link",
+  },
+  {
+    to: "/admin/enquiries",
+    label: "Enquiries",
+    icon: MessageSquare,
+    ocid: "admin_nav.enquiries_link",
+    badge: true,
+  },
+  {
+    to: "/admin/whatsapp-leads",
+    label: "WhatsApp Leads",
+    icon: MessageCircle,
+    ocid: "admin_nav.whatsapp_leads_link",
+  },
+  {
+    to: "/admin/analytics",
+    label: "Analytics",
+    icon: BarChart3,
+    ocid: "admin_nav.analytics_link",
+  },
+  {
+    to: "/admin/website-settings",
+    label: "Website Settings",
+    icon: Globe,
+    ocid: "admin_nav.website_settings_link",
+  },
+  {
+    to: "/admin/settings",
+    label: "Settings",
+    icon: Settings,
+    ocid: "admin_nav.settings_link",
   },
 ];
 
 export default function AdminLayout() {
-  const { identity, clear } = useInternetIdentity();
-  const { data: isAdmin, isLoading } = useIsCallerAdmin();
   const navigate = useNavigate();
-  const qc = useQueryClient();
   const router = useRouterState();
   const currentPath = router.location.pathname;
-
-  const isAuthenticated = !!identity;
+  const { data: inquiries } = useGetAllInquiries();
+  const unreadCount = inquiries?.filter((i) => !i.isRead).length ?? 0;
 
   useEffect(() => {
-    if (!isLoading && (!isAuthenticated || isAdmin === false)) {
+    if (!getAdminSession()) {
       navigate({ to: "/admin/login" });
     }
-  }, [isAuthenticated, isAdmin, isLoading, navigate]);
+  }, [navigate]);
 
-  const handleLogout = async () => {
-    await clear();
-    qc.clear();
-    navigate({ to: "/admin/login" });
-  };
-
-  if (isLoading || !isAuthenticated) {
+  if (!getAdminSession()) {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
@@ -87,11 +133,10 @@ export default function AdminLayout() {
     );
   }
 
-  const principal = identity?.getPrincipal().toString() ?? "";
-  const shortPrincipal =
-    principal.length > 20
-      ? `${principal.slice(0, 10)}...${principal.slice(-5)}`
-      : principal;
+  const handleLogout = () => {
+    clearAdminSession();
+    navigate({ to: "/admin/login" });
+  };
 
   return (
     <div
@@ -102,59 +147,94 @@ export default function AdminLayout() {
       <aside
         className="w-64 flex flex-col border-r shrink-0"
         style={{
-          backgroundColor: "var(--obsidian-mid)",
-          borderColor: "oklch(0.22 0 0)",
+          backgroundColor: "oklch(0.14 0.045 240)",
+          borderColor: "oklch(0.20 0.05 240)",
         }}
       >
         {/* Brand */}
         <div
-          className="p-6 border-b flex items-center gap-3"
-          style={{ borderColor: "oklch(0.22 0 0)" }}
+          className="p-5 border-b flex items-center gap-3"
+          style={{ borderColor: "oklch(0.20 0.05 240)" }}
         >
           <img
-            src="/assets/uploads/Gemini_Generated_Image_ubdf1aubdf1aubdf-removebg-preview-1--1.png"
+            src="/assets/uploads/Gemini_Generated_Image_ubdf1aubdf1aubdf-removebg-preview-1-1-1.png"
             alt="Gemora Global"
-            className="h-10 w-10 object-contain"
+            className="h-9 w-9 object-contain"
           />
           <div>
             <p
-              className="font-serif text-base"
-              style={{ color: "var(--gold)", fontWeight: 400 }}
+              className="font-serif text-sm"
+              style={{
+                color: "var(--gold)",
+                fontWeight: 400,
+                letterSpacing: "0.08em",
+              }}
             >
               Gemora Global
             </p>
             <p
               className="text-xs"
-              style={{ color: "oklch(0.45 0 0)", letterSpacing: "0.1em" }}
+              style={{
+                color: "oklch(0.4 0 0)",
+                letterSpacing: "0.15em",
+                fontSize: "0.6rem",
+              }}
             >
-              Admin Panel
+              ADMIN PANEL
             </p>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 py-6 px-3">
-          <ul className="flex flex-col gap-1">
+        <nav className="flex-1 py-4 px-2 overflow-y-auto">
+          <p
+            className="text-xs px-3 mb-2"
+            style={{
+              color: "oklch(0.38 0 0)",
+              letterSpacing: "0.2em",
+              fontSize: "0.58rem",
+            }}
+          >
+            NAVIGATION
+          </p>
+          <ul className="flex flex-col gap-0.5">
             {navItems.map((item) => {
               const active =
-                currentPath === item.to || currentPath.startsWith(item.to);
+                currentPath === item.to ||
+                currentPath.startsWith(`${item.to}/`);
+              const showBadge = item.badge && unreadCount > 0;
               return (
                 <li key={item.to}>
                   <Link
-                    to={item.to}
+                    to={item.to as any}
                     data-ocid={item.ocid}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm transition-all duration-200 group"
+                    className="flex items-center gap-2.5 px-3 py-2 text-xs transition-all duration-200 rounded-sm group"
                     style={{
                       backgroundColor: active
-                        ? "oklch(0.18 0 0)"
+                        ? "oklch(0.72 0.12 78 / 0.12)"
                         : "transparent",
-                      color: active ? "var(--gold)" : "oklch(0.6 0 0)",
-                      letterSpacing: "0.05em",
+                      color: active ? "var(--gold)" : "oklch(0.55 0 0)",
+                      letterSpacing: "0.04em",
+                      borderLeft: active
+                        ? "2px solid var(--gold)"
+                        : "2px solid transparent",
                     }}
                   >
-                    <item.icon size={16} />
-                    <span>{item.label}</span>
-                    {active && <ChevronRight size={14} className="ml-auto" />}
+                    <item.icon size={14} style={{ flexShrink: 0 }} />
+                    <span className="flex-1">{item.label}</span>
+                    {showBadge && (
+                      <span
+                        className="text-xs px-1.5 py-0.5 font-semibold"
+                        style={{
+                          backgroundColor: "var(--gold)",
+                          color: "oklch(0.12 0.04 240)",
+                          fontSize: "0.6rem",
+                          borderRadius: "2px",
+                        }}
+                      >
+                        {unreadCount}
+                      </span>
+                    )}
                   </Link>
                 </li>
               );
@@ -162,51 +242,68 @@ export default function AdminLayout() {
           </ul>
 
           <div
-            className="mt-6 pt-6"
-            style={{ borderTop: "1px solid oklch(0.22 0 0)" }}
+            className="mt-4 pt-4"
+            style={{ borderTop: "1px solid oklch(0.20 0.05 240)" }}
           >
             <Link
               to="/"
               data-ocid="admin_nav.public_site_link"
-              className="flex items-center gap-3 px-4 py-2.5 text-sm"
-              style={{ color: "oklch(0.5 0 0)", letterSpacing: "0.05em" }}
+              className="flex items-center gap-2.5 px-3 py-2 text-xs rounded-sm"
+              style={{ color: "oklch(0.42 0 0)", letterSpacing: "0.04em" }}
             >
-              <BarChart3 size={16} />
+              <ExternalLink size={12} />
               <span>View Public Site</span>
             </Link>
           </div>
         </nav>
 
-        {/* User info + logout */}
+        {/* User + Logout */}
         <div
-          className="p-4 border-t"
-          style={{ borderColor: "oklch(0.22 0 0)" }}
+          className="p-3 border-t"
+          style={{ borderColor: "oklch(0.20 0.05 240)" }}
         >
-          <div className="mb-3 px-1">
-            <p className="text-xs" style={{ color: "oklch(0.45 0 0)" }}>
-              Logged in as
-            </p>
-            <p
-              className="text-xs font-mono mt-0.5 truncate"
-              style={{ color: "var(--gold-light)" }}
+          <div
+            className="flex items-center gap-2 px-3 py-2 mb-1 rounded-sm"
+            style={{ backgroundColor: "oklch(0.17 0.04 240)" }}
+          >
+            <div
+              className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+              style={{
+                backgroundColor: "var(--gold)",
+                color: "oklch(0.12 0.04 240)",
+              }}
             >
-              {shortPrincipal}
-            </p>
+              A
+            </div>
+            <div className="min-w-0">
+              <p
+                className="text-xs"
+                style={{ color: "var(--gold-light)", letterSpacing: "0.04em" }}
+              >
+                admin
+              </p>
+              <p
+                className="text-xs"
+                style={{ color: "oklch(0.38 0 0)", fontSize: "0.6rem" }}
+              >
+                Administrator
+              </p>
+            </div>
           </div>
           <button
             type="button"
             data-ocid="admin_nav.logout_button"
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 w-full text-xs transition-colors duration-200 hover:bg-[oklch(0.18_0_0)]"
-            style={{ color: "oklch(0.55 0.1 29)", letterSpacing: "0.1em" }}
+            className="flex items-center gap-2.5 px-3 py-2 w-full text-xs transition-colors duration-200 rounded-sm hover:bg-red-900/20"
+            style={{ color: "oklch(0.55 0.12 29)", letterSpacing: "0.08em" }}
           >
-            <LogOut size={14} />
-            Logout
+            <LogOut size={13} />
+            <span>Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* Main content */}
+      {/* Main */}
       <main
         className="flex-1 overflow-y-auto"
         style={{ backgroundColor: "var(--obsidian)" }}

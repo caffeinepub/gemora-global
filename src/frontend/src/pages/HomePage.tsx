@@ -93,7 +93,7 @@ export default function HomePage() {
 
           <h1
             className="font-serif text-4xl md:text-6xl lg:text-7xl leading-tight mb-6"
-            style={{ fontWeight: 300, color: "oklch(0.18 0 0)" }}
+            style={{ fontWeight: 300, color: "oklch(0.18 0.055 240)" }}
           >
             <motion.span
               style={{ display: "block" }}
@@ -140,7 +140,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-base md:text-lg mb-10 leading-relaxed"
-            style={{ color: "oklch(0.35 0 0)" }}
+            style={{ color: "oklch(0.30 0.055 240)" }}
           >
             Trusted by wholesalers, boutiques and distributors across Europe,
             UAE, USA &amp; UK
@@ -180,8 +180,8 @@ export default function HomePage() {
                 style={{
                   borderRadius: 0,
                   letterSpacing: "0.15em",
-                  borderColor: "oklch(0.25 0 0)",
-                  color: "oklch(0.18 0 0)",
+                  borderColor: "oklch(0.30 0.06 240)",
+                  color: "oklch(0.18 0.055 240)",
                 }}
               >
                 Contact for Wholesale
@@ -194,7 +194,7 @@ export default function HomePage() {
       {/* Stats */}
       <section
         style={{ backgroundColor: "var(--obsidian-mid)" }}
-        className="py-14 border-y border-[oklch(0.2_0_0)]"
+        className="py-14 border-y border-[oklch(0.28_0.065_240)]"
       >
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -256,7 +256,7 @@ export default function HomePage() {
                     </span>
                   </div>
                 </div>
-                <div className="pt-5 pb-3 border-b border-[oklch(0.2_0_0)]">
+                <div className="pt-5 pb-3 border-b border-[oklch(0.28_0.065_240)]">
                   <h3
                     className="font-serif text-xl"
                     style={{ color: "var(--gold-light)", fontWeight: 400 }}
@@ -348,7 +348,7 @@ export default function HomePage() {
                   boxShadow: "0 0 30px rgba(201,168,76,0.2)",
                   borderColor: "var(--gold)",
                 }}
-                className="text-center p-8 border border-[oklch(0.2_0_0)] transition-colors duration-300"
+                className="text-center p-8 border border-[oklch(0.28_0.065_240)] transition-colors duration-300"
               >
                 <item.icon
                   size={28}
@@ -373,7 +373,7 @@ export default function HomePage() {
       {/* Global Markets */}
       <section
         style={{ backgroundColor: "var(--obsidian)" }}
-        className="py-20 border-y border-[oklch(0.18_0_0)]"
+        className="py-20 border-y border-[oklch(0.18_0.055_240)]"
       >
         <div className="container mx-auto px-6 text-center">
           <p className="section-label mb-8">Trusted Worldwide</p>

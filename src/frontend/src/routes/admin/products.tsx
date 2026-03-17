@@ -40,6 +40,7 @@ type FormState = {
   description: string;
   category: string;
   moq: string;
+  priceRange: string;
   imageUrls: string[];
 };
 
@@ -48,6 +49,7 @@ const emptyForm: FormState = {
   description: "",
   category: "",
   moq: "",
+  priceRange: "",
   imageUrls: [],
 };
 
@@ -78,6 +80,7 @@ export default function AdminProducts() {
       description: p.description,
       category: p.category,
       moq: p.moq,
+      priceRange: p.priceRange,
       imageUrls: p.imageUrls,
     });
     setDialogOpen(true);
@@ -117,6 +120,7 @@ export default function AdminProducts() {
           form.description,
           form.category,
           form.moq,
+          form.priceRange,
           form.imageUrls,
         );
         toast.success("Product updated");
@@ -126,6 +130,7 @@ export default function AdminProducts() {
           form.description,
           form.category,
           form.moq,
+          form.priceRange,
           form.imageUrls,
         );
         toast.success("Product added");
@@ -183,7 +188,7 @@ export default function AdminProducts() {
             <Skeleton
               key={i}
               className="h-48"
-              style={{ backgroundColor: "oklch(0.18 0 0)" }}
+              style={{ backgroundColor: "oklch(0.18 0.055 240)" }}
             />
           ))}
         </div>
@@ -191,7 +196,7 @@ export default function AdminProducts() {
         <div
           className="text-center py-20 border"
           style={{
-            borderColor: "oklch(0.22 0 0)",
+            borderColor: "oklch(0.22 0.06 240)",
             backgroundColor: "var(--obsidian-mid)",
           }}
           data-ocid="products.empty_state"
@@ -203,17 +208,14 @@ export default function AdminProducts() {
             No products yet
           </p>
           <p className="text-sm text-foreground/40 mb-6">
-            Add your first product to get started.
+            Add your first jewellery product to the catalogue
           </p>
           <Button
-            data-ocid="products.primary_button"
             onClick={openAdd}
             className="h-10 text-xs tracking-widest uppercase px-6"
             style={{
               backgroundColor: "var(--gold)",
               color: "var(--obsidian)",
-              fontWeight: 500,
-              letterSpacing: "0.12em",
               borderRadius: 0,
             }}
           >
@@ -225,11 +227,11 @@ export default function AdminProducts() {
           {products.map((p, i) => (
             <div
               key={String(p.id)}
-              data-ocid={`products.item.${i + 1}`}
+              data-ocid={`products.card.${i + 1}`}
               className="border flex flex-col"
               style={{
                 backgroundColor: "var(--obsidian-mid)",
-                borderColor: "oklch(0.22 0 0)",
+                borderColor: "oklch(0.22 0.06 240)",
               }}
             >
               {p.imageUrls[0] ? (
@@ -237,33 +239,39 @@ export default function AdminProducts() {
                   src={p.imageUrls[0]}
                   alt={p.name}
                   className="w-full h-40 object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      "/assets/jewellery-hero.jpg";
+                  }}
                 />
               ) : (
                 <div
                   className="w-full h-40 flex items-center justify-center"
-                  style={{ backgroundColor: "oklch(0.18 0 0)" }}
+                  style={{ backgroundColor: "oklch(0.14 0.03 240)" }}
                 >
-                  <span className="text-xs text-foreground/30">No image</span>
+                  <span className="text-foreground/20 text-xs tracking-widest uppercase">
+                    No Image
+                  </span>
                 </div>
               )}
-              <div className="p-4 flex flex-col flex-1">
-                <span
-                  className="text-xs tracking-widest uppercase mb-1"
-                  style={{ color: "var(--gold)", fontSize: "0.65rem" }}
-                >
-                  {p.category}
-                </span>
-                <h3
-                  className="font-serif text-base"
+              <div className="p-4 flex-1 flex flex-col">
+                <p
+                  className="font-serif text-base mb-1"
                   style={{ color: "var(--gold-light)", fontWeight: 400 }}
                 >
                   {p.name}
-                </h3>
-                <p className="text-xs text-foreground/40 mt-1 leading-relaxed line-clamp-2 flex-1">
-                  {p.description}
                 </p>
-                <p className="text-xs text-foreground/50 mt-2">MOQ: {p.moq}</p>
-                <div className="flex gap-2 mt-4">
+                <p className="text-xs text-foreground/40 mb-2">{p.category}</p>
+                {p.priceRange && (
+                  <p
+                    className="text-xs mb-1"
+                    style={{ color: "var(--gold)", opacity: 0.85 }}
+                  >
+                    {p.priceRange}
+                  </p>
+                )}
+                <p className="text-xs text-foreground/40 mb-3">MOQ: {p.moq}</p>
+                <div className="flex gap-2 mt-auto">
                   <Button
                     data-ocid={`products.edit_button.${i + 1}`}
                     size="sm"
@@ -271,8 +279,8 @@ export default function AdminProducts() {
                     onClick={() => openEdit(p)}
                     className="flex-1 h-8 text-xs"
                     style={{
-                      borderColor: "var(--gold)",
-                      color: "var(--gold)",
+                      borderColor: "oklch(0.3 0.06 240)",
+                      color: "oklch(0.65 0 0)",
                       borderRadius: 0,
                     }}
                   >
@@ -283,14 +291,14 @@ export default function AdminProducts() {
                     size="sm"
                     variant="outline"
                     onClick={() => setDeleteConfirmId(p.id)}
-                    className="flex-1 h-8 text-xs"
+                    className="h-8 text-xs px-3"
                     style={{
-                      borderColor: "oklch(0.55 0.22 29)",
+                      borderColor: "oklch(0.4 0.15 29)",
                       color: "oklch(0.65 0.15 29)",
                       borderRadius: 0,
                     }}
                   >
-                    <Trash2 size={12} className="mr-1" /> Delete
+                    <Trash2 size={12} />
                   </Button>
                 </div>
               </div>
@@ -306,7 +314,7 @@ export default function AdminProducts() {
           className="max-w-lg"
           style={{
             backgroundColor: "var(--obsidian-mid)",
-            borderColor: "oklch(0.25 0 0)",
+            borderColor: "oklch(0.30 0.06 240)",
             borderRadius: 0,
           }}
         >
@@ -336,7 +344,7 @@ export default function AdminProducts() {
                 placeholder="e.g. Layered Gold Necklace"
                 style={{
                   backgroundColor: "var(--obsidian)",
-                  borderColor: "oklch(0.25 0 0)",
+                  borderColor: "oklch(0.30 0.06 240)",
                   borderRadius: 0,
                 }}
               />
@@ -359,7 +367,7 @@ export default function AdminProducts() {
                 rows={3}
                 style={{
                   backgroundColor: "var(--obsidian)",
-                  borderColor: "oklch(0.25 0 0)",
+                  borderColor: "oklch(0.30 0.06 240)",
                   borderRadius: 0,
                 }}
               />
@@ -381,7 +389,7 @@ export default function AdminProducts() {
                     data-ocid="products.select"
                     style={{
                       backgroundColor: "var(--obsidian)",
-                      borderColor: "oklch(0.25 0 0)",
+                      borderColor: "oklch(0.30 0.06 240)",
                       borderRadius: 0,
                     }}
                   >
@@ -390,7 +398,7 @@ export default function AdminProducts() {
                   <SelectContent
                     style={{
                       backgroundColor: "var(--obsidian-mid)",
-                      borderColor: "oklch(0.25 0 0)",
+                      borderColor: "oklch(0.30 0.06 240)",
                       borderRadius: 0,
                     }}
                   >
@@ -418,11 +426,32 @@ export default function AdminProducts() {
                   placeholder="e.g. 50 pieces"
                   style={{
                     backgroundColor: "var(--obsidian)",
-                    borderColor: "oklch(0.25 0 0)",
+                    borderColor: "oklch(0.30 0.06 240)",
                     borderRadius: 0,
                   }}
                 />
               </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <Label
+                className="section-label"
+                style={{ color: "oklch(0.55 0 0)" }}
+              >
+                Price Range
+              </Label>
+              <Input
+                value={form.priceRange}
+                onChange={(e) =>
+                  setForm((p) => ({ ...p, priceRange: e.target.value }))
+                }
+                placeholder="e.g. ₹200–₹500 per piece"
+                style={{
+                  backgroundColor: "var(--obsidian)",
+                  borderColor: "oklch(0.30 0.06 240)",
+                  borderRadius: 0,
+                }}
+              />
             </div>
 
             {/* Image upload */}
@@ -542,7 +571,7 @@ export default function AdminProducts() {
           className="max-w-sm"
           style={{
             backgroundColor: "var(--obsidian-mid)",
-            borderColor: "oklch(0.25 0 0)",
+            borderColor: "oklch(0.30 0.06 240)",
             borderRadius: 0,
           }}
         >

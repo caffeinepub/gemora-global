@@ -64,6 +64,7 @@ export default function ContactPage() {
     company: "",
     country: "",
     phone: "",
+    whatsapp: "",
     message: "",
     inquiryType: "wholesale" as "wholesale" | "catalogue" | "general",
   });
@@ -92,6 +93,7 @@ export default function ContactPage() {
         form.company,
         form.country,
         form.phone,
+        form.whatsapp,
         form.message,
         typeMap[form.inquiryType],
       );
@@ -208,7 +210,7 @@ export default function ContactPage() {
               </a>
 
               {/* Map */}
-              <div className="border border-[oklch(0.22_0_0)] overflow-hidden">
+              <div className="border border-[oklch(0.30_0.06_240)] overflow-hidden">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3558.1!2d75.7377!3d26.9124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396db3b0a0a0a0a1%3A0x0!2sVaishali+Nagar%2C+Jaipur%2C+Rajasthan!5e0!3m2!1sen!2sin!4v1"
                   width="100%"
@@ -231,7 +233,7 @@ export default function ContactPage() {
             >
               {success ? (
                 <div
-                  className="h-full flex flex-col items-center justify-center text-center p-12 border border-[oklch(0.2_0_0)]"
+                  className="h-full flex flex-col items-center justify-center text-center p-12 border border-[oklch(0.28_0.065_240)]"
                   data-ocid="contact.success_state"
                 >
                   <div className="text-5xl mb-6">✉️</div>
@@ -266,7 +268,7 @@ export default function ContactPage() {
                     <div className="flex flex-col gap-2">
                       <Label
                         className="section-label"
-                        style={{ color: "oklch(0.5 0 0)" }}
+                        style={{ color: "oklch(0.65 0.02 240)" }}
                       >
                         Name *
                       </Label>
@@ -278,7 +280,7 @@ export default function ContactPage() {
                         required
                         style={{
                           backgroundColor: "var(--obsidian)",
-                          border: "1px solid oklch(0.25 0 0)",
+                          border: "1px solid oklch(0.30 0.06 240)",
                           borderRadius: 0,
                         }}
                       />
@@ -286,7 +288,7 @@ export default function ContactPage() {
                     <div className="flex flex-col gap-2">
                       <Label
                         className="section-label"
-                        style={{ color: "oklch(0.5 0 0)" }}
+                        style={{ color: "oklch(0.65 0.02 240)" }}
                       >
                         Email *
                       </Label>
@@ -299,7 +301,7 @@ export default function ContactPage() {
                         required
                         style={{
                           backgroundColor: "var(--obsidian)",
-                          border: "1px solid oklch(0.25 0 0)",
+                          border: "1px solid oklch(0.30 0.06 240)",
                           borderRadius: 0,
                         }}
                       />
@@ -309,7 +311,7 @@ export default function ContactPage() {
                   <div className="flex flex-col gap-2">
                     <Label
                       className="section-label"
-                      style={{ color: "oklch(0.5 0 0)" }}
+                      style={{ color: "oklch(0.65 0.02 240)" }}
                     >
                       Company Name
                     </Label>
@@ -319,7 +321,7 @@ export default function ContactPage() {
                       placeholder="Your company"
                       style={{
                         backgroundColor: "var(--obsidian)",
-                        border: "1px solid oklch(0.25 0 0)",
+                        border: "1px solid oklch(0.30 0.06 240)",
                         borderRadius: 0,
                       }}
                     />
@@ -329,7 +331,7 @@ export default function ContactPage() {
                     <div className="flex flex-col gap-2">
                       <Label
                         className="section-label"
-                        style={{ color: "oklch(0.5 0 0)" }}
+                        style={{ color: "oklch(0.65 0.02 240)" }}
                       >
                         Country
                       </Label>
@@ -337,7 +339,7 @@ export default function ContactPage() {
                         <SelectTrigger
                           style={{
                             backgroundColor: "var(--obsidian)",
-                            border: "1px solid oklch(0.25 0 0)",
+                            border: "1px solid oklch(0.30 0.06 240)",
                             borderRadius: 0,
                           }}
                         >
@@ -360,7 +362,7 @@ export default function ContactPage() {
                     <div className="flex flex-col gap-2">
                       <Label
                         className="section-label"
-                        style={{ color: "oklch(0.5 0 0)" }}
+                        style={{ color: "oklch(0.65 0.02 240)" }}
                       >
                         Phone
                       </Label>
@@ -370,7 +372,7 @@ export default function ContactPage() {
                         placeholder="+1 234 567 8900"
                         style={{
                           backgroundColor: "var(--obsidian)",
-                          border: "1px solid oklch(0.25 0 0)",
+                          border: "1px solid oklch(0.30 0.06 240)",
                           borderRadius: 0,
                         }}
                       />
@@ -380,7 +382,26 @@ export default function ContactPage() {
                   <div className="flex flex-col gap-2">
                     <Label
                       className="section-label"
-                      style={{ color: "oklch(0.5 0 0)" }}
+                      style={{ color: "oklch(0.65 0.02 240)" }}
+                    >
+                      WhatsApp Number
+                    </Label>
+                    <Input
+                      value={form.whatsapp}
+                      onChange={(e) => set("whatsapp", e.target.value)}
+                      placeholder="e.g. 447911123456 (with country code)"
+                      style={{
+                        backgroundColor: "var(--obsidian)",
+                        border: "1px solid oklch(0.30 0.06 240)",
+                        borderRadius: 0,
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <Label
+                      className="section-label"
+                      style={{ color: "oklch(0.65 0.02 240)" }}
                     >
                       Inquiry Type
                     </Label>
@@ -391,7 +412,7 @@ export default function ContactPage() {
                       <SelectTrigger
                         style={{
                           backgroundColor: "var(--obsidian)",
-                          border: "1px solid oklch(0.25 0 0)",
+                          border: "1px solid oklch(0.30 0.06 240)",
                           borderRadius: 0,
                         }}
                       >
@@ -417,7 +438,7 @@ export default function ContactPage() {
                   <div className="flex flex-col gap-2">
                     <Label
                       className="section-label"
-                      style={{ color: "oklch(0.5 0 0)" }}
+                      style={{ color: "oklch(0.65 0.02 240)" }}
                     >
                       Message *
                     </Label>
@@ -430,7 +451,7 @@ export default function ContactPage() {
                       required
                       style={{
                         backgroundColor: "var(--obsidian)",
-                        border: "1px solid oklch(0.25 0 0)",
+                        border: "1px solid oklch(0.30 0.06 240)",
                         borderRadius: 0,
                         resize: "none",
                       }}

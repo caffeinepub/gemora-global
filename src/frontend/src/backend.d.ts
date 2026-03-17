@@ -22,6 +22,7 @@ export interface Inquiry {
     name: string;
     isRead: boolean;
     email: string;
+    whatsappNumber: string;
     company: string;
     message: string;
     timestamp: bigint;
@@ -39,6 +40,7 @@ export interface Product {
     name: string;
     createdAt: bigint;
     description: string;
+    priceRange: string;
     category: string;
 }
 export enum InquiryType {
@@ -52,7 +54,7 @@ export enum UserRole {
     guest = "guest"
 }
 export interface backendInterface {
-    addProduct(name: string, description: string, category: string, moq: string, imageUrls: Array<string>): Promise<bigint>;
+    addProduct(name: string, description: string, category: string, moq: string, priceRange: string, imageUrls: Array<string>): Promise<bigint>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteProduct(id: bigint): Promise<boolean>;
     getAllCatalogueRequests(): Promise<Array<CatalogueRequest>>;
@@ -69,6 +71,6 @@ export interface backendInterface {
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
     setContentBlock(key: string, value: string): Promise<void>;
     submitCatalogueRequest(name: string, email: string): Promise<void>;
-    submitInquiry(name: string, email: string, company: string, country: string, phone: string, message: string, inquiryType: InquiryType): Promise<void>;
-    updateProduct(id: bigint, name: string, description: string, category: string, moq: string, imageUrls: Array<string>): Promise<boolean>;
+    submitInquiry(name: string, email: string, company: string, country: string, phone: string, whatsappNumber: string, message: string, inquiryType: InquiryType): Promise<void>;
+    updateProduct(id: bigint, name: string, description: string, category: string, moq: string, priceRange: string, imageUrls: Array<string>): Promise<boolean>;
 }

@@ -89,7 +89,7 @@ const countries = [
 ];
 
 const baseInputStyle: React.CSSProperties = {
-  backgroundColor: "oklch(0.12 0 0)",
+  backgroundColor: "oklch(0.14 0.04 240)",
   color: "var(--foreground)",
   padding: "0.75rem 1rem",
   width: "100%",
@@ -103,7 +103,7 @@ const baseInputStyle: React.CSSProperties = {
 function fieldStyle(focused: boolean): React.CSSProperties {
   return {
     ...baseInputStyle,
-    border: `1px solid ${focused ? "var(--gold)" : "oklch(0.25 0 0)"}`,
+    border: `1px solid ${focused ? "var(--gold)" : "oklch(0.30 0.06 240)"}`,
   };
 }
 
@@ -115,6 +115,7 @@ export default function WholesalePage() {
     company: "",
     country: "",
     phone: "",
+    whatsapp: "",
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -145,6 +146,7 @@ export default function WholesalePage() {
         form.company,
         form.country,
         form.phone,
+        form.whatsapp,
         form.message,
         InquiryType.wholesale,
       );
@@ -155,6 +157,7 @@ export default function WholesalePage() {
         company: "",
         country: "",
         phone: "",
+        whatsapp: "",
         message: "",
       });
     } catch {
@@ -171,7 +174,7 @@ export default function WholesalePage() {
       <PageHero
         label="B2B Export Partner"
         title="Wholesale & Export"
-        subtitle="Your trusted manufacturing and export partner from Surat, India"
+        subtitle="Your trusted manufacturing and export partner from Jaipur, India"
       />
 
       <section
@@ -230,7 +233,7 @@ export default function WholesalePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-8 border border-[oklch(0.2_0_0)] hover:border-[var(--gold)] transition-colors duration-300"
+                className="p-8 border border-[oklch(0.28_0.065_240)] hover:border-[var(--gold)] transition-colors duration-300"
               >
                 <card.icon
                   size={28}
@@ -454,7 +457,7 @@ export default function WholesalePage() {
                     >
                       <option
                         value=""
-                        style={{ backgroundColor: "oklch(0.12 0 0)" }}
+                        style={{ backgroundColor: "oklch(0.14 0.04 240)" }}
                       >
                         Select country
                       </option>
@@ -462,7 +465,7 @@ export default function WholesalePage() {
                         <option
                           key={c}
                           value={c}
-                          style={{ backgroundColor: "oklch(0.12 0 0)" }}
+                          style={{ backgroundColor: "oklch(0.14 0.04 240)" }}
                         >
                           {c}
                         </option>
@@ -485,24 +488,45 @@ export default function WholesalePage() {
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="inq-phone"
-                  className="block text-xs section-label mb-2"
-                >
-                  Phone / WhatsApp
-                </label>
-                <input
-                  id="inq-phone"
-                  type="tel"
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField("phone")}
-                  onBlur={() => setFocusedField("")}
-                  placeholder="+1 234 567 8900"
-                  style={fieldStyle(focusedField === "phone")}
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label
+                    htmlFor="inq-phone"
+                    className="block text-xs section-label mb-2"
+                  >
+                    Phone
+                  </label>
+                  <input
+                    id="inq-phone"
+                    type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField("phone")}
+                    onBlur={() => setFocusedField("")}
+                    placeholder="+1 234 567 8900"
+                    style={fieldStyle(focusedField === "phone")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="inq-whatsapp"
+                    className="block text-xs section-label mb-2"
+                  >
+                    WhatsApp Number
+                  </label>
+                  <input
+                    id="inq-whatsapp"
+                    type="tel"
+                    name="whatsapp"
+                    value={form.whatsapp}
+                    onChange={handleChange}
+                    onFocus={() => setFocusedField("whatsapp")}
+                    onBlur={() => setFocusedField("")}
+                    placeholder="447911123456"
+                    style={fieldStyle(focusedField === "whatsapp")}
+                  />
+                </div>
               </div>
 
               <div>

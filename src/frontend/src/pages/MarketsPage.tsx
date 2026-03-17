@@ -5,41 +5,60 @@ import { motion } from "motion/react";
 
 const markets = [
   {
-    flag: "🇫🇷",
+    code: "fr",
     name: "France",
     desc: "Parisian boutiques and French fashion retailers love our minimal and contemporary collections. Strong demand for delicate gold-plated jewellery.",
   },
   {
-    flag: "🇦🇪",
+    code: "ae",
     name: "UAE",
     desc: "The GCC market has a strong appetite for statement jewellery, bridal sets and kundan work. Dubai and Abu Dhabi retailers are key buyers.",
   },
   {
-    flag: "🇺🇸",
+    code: "us",
     name: "USA",
     desc: "American boutiques, Etsy wholesale buyers and fashion retailers across New York, LA and Chicago stock our minimal and trendy collections.",
   },
   {
-    flag: "🇬🇧",
+    code: "gb",
     name: "UK",
     desc: "British jewellery boutiques and Asian wedding markets in London and Birmingham are among our strongest repeat customers.",
   },
   {
-    flag: "🇩🇪",
+    code: "de",
     name: "Germany",
     desc: "German fashion retailers value our consistent quality and precise craftsmanship. Strong demand for minimalist and Art Deco inspired pieces.",
   },
   {
-    flag: "🇦🇺",
+    code: "au",
     name: "Australia",
     desc: "Australian boutiques and online jewellery brands source our minimal and bohemian collections for the local fashion market.",
   },
   {
-    flag: "🇨🇦",
+    code: "ca",
     name: "Canada",
     desc: "Canadian multi-cultural wedding market drives demand for our bridal collections. Growing interest from Toronto and Vancouver boutiques.",
   },
 ];
+
+function RoundFlag({ code, name }: { code: string; name: string }) {
+  return (
+    <div
+      className="w-16 h-16 rounded-full overflow-hidden border-2 mb-4 flex-shrink-0"
+      style={{
+        borderColor: "var(--gold)",
+        boxShadow: "0 0 12px oklch(0.7 0.15 80 / 0.3)",
+      }}
+    >
+      <img
+        src={`https://flagcdn.com/w128/${code}.png`}
+        alt={`${name} flag`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  );
+}
 
 export default function MarketsPage() {
   return (
@@ -63,9 +82,9 @@ export default function MarketsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="p-8 border border-[oklch(0.2_0_0)] hover:border-[var(--gold)] transition-colors duration-300"
+                className="p-8 border border-[oklch(0.28_0.065_240)] hover:border-[var(--gold)] transition-colors duration-300 flex flex-col items-start"
               >
-                <div className="text-4xl mb-4">{m.flag}</div>
+                <RoundFlag code={m.code} name={m.name} />
                 <h3
                   className="font-serif text-2xl mb-3"
                   style={{ color: "var(--gold-light)", fontWeight: 400 }}
@@ -85,7 +104,7 @@ export default function MarketsPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="text-center py-16 border border-[oklch(0.2_0_0)]"
+            className="text-center py-16 border border-[oklch(0.28_0.065_240)]"
           >
             <p className="section-label mb-4">Expand Your Market</p>
             <h2

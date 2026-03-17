@@ -102,7 +102,7 @@ export default function AboutPage() {
       {/* Stats */}
       <section
         style={{ backgroundColor: "var(--obsidian)" }}
-        className="py-16 border-y border-[oklch(0.18_0_0)]"
+        className="py-16 border-y border-[oklch(0.18_0.055_240)]"
       >
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -155,7 +155,7 @@ export default function AboutPage() {
                   boxShadow: "0 0 25px rgba(201,168,76,0.15)",
                   borderColor: "var(--gold)",
                 }}
-                className="p-8 border border-[oklch(0.2_0_0)] transition-colors duration-300"
+                className="p-8 border border-[oklch(0.28_0.065_240)] transition-colors duration-300"
               >
                 <div
                   className="w-8 h-px mb-6"

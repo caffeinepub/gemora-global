@@ -89,7 +89,7 @@ export default function WhyUsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="p-8 border border-[oklch(0.2_0_0)] hover:border-[var(--gold)] transition-colors duration-300 group"
+                className="p-8 border border-[oklch(0.28_0.065_240)] hover:border-[var(--gold)] transition-colors duration-300 group"
               >
                 <v.icon
                   size={30}
@@ -128,13 +128,13 @@ export default function WhyUsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.15 }}
-                className="p-8 border border-[oklch(0.2_0_0)]"
+                className="p-8 border border-[oklch(0.28_0.065_240)]"
               >
                 <div className="text-3xl mb-4">{t.flag}</div>
                 <p className="text-sm text-foreground/60 leading-relaxed mb-6 italic font-serif">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="border-t border-[oklch(0.2_0_0)] pt-4">
+                <div className="border-t border-[oklch(0.28_0.065_240)] pt-4">
                   <p
                     className="font-serif text-sm"
                     style={{ color: "var(--gold-light)" }}
