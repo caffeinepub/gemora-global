@@ -10,6 +10,7 @@ import MarketsPage from "@/pages/MarketsPage";
 import WholesalePage from "@/pages/WholesalePage";
 import WhyUsPage from "@/pages/WhyUsPage";
 import AdminAnalytics from "@/routes/admin/analytics";
+import AdminBlog from "@/routes/admin/blog";
 import AdminCatalogue from "@/routes/admin/catalogue";
 import AdminCategories from "@/routes/admin/categories";
 import AdminContacts from "@/routes/admin/contacts";
@@ -26,6 +27,8 @@ import AdminProducts from "@/routes/admin/products";
 import AdminSystemSettings from "@/routes/admin/settings";
 import AdminWebsiteSettings from "@/routes/admin/website-settings";
 import AdminWhatsappLeads from "@/routes/admin/whatsapp-leads";
+import BlogPostPage from "@/routes/blog/$slug";
+import BlogListPage from "@/routes/blog/index";
 import {
   Outlet,
   createRootRoute,
@@ -114,6 +117,16 @@ const contactRoute = createRoute({
   path: "/contact",
   component: ContactPage,
 });
+const blogRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/blog",
+  component: BlogListPage,
+});
+const blogPostRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/blog/$slug",
+  component: BlogPostPage,
+});
 
 const adminLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -191,6 +204,11 @@ const adminContentRoute = createRoute({
   path: "/content",
   component: AdminContent,
 });
+const adminBlogRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "/blog",
+  component: AdminBlog,
+});
 const adminAnalyticsRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/analytics",
@@ -225,6 +243,7 @@ adminLayoutRoute.addChildren([
   adminEnquiriesRoute,
   adminWhatsappLeadsRoute,
   adminContentRoute,
+  adminBlogRoute,
   adminAnalyticsRoute,
   adminContactsRoute,
   adminWebsiteSettingsRoute,
@@ -240,6 +259,8 @@ export const routeTree = rootRoute.addChildren([
   marketsRoute,
   galleryRoute,
   contactRoute,
+  blogRoute,
+  blogPostRoute,
   adminLoginRoute,
   adminLayoutRoute,
 ]);

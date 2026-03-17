@@ -10,6 +10,18 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface BlogPost {
+  'id' : bigint,
+  'coverImageUrl' : string,
+  'title' : string,
+  'content' : string,
+  'isPublished' : boolean,
+  'createdAt' : bigint,
+  'slug' : string,
+  'tags' : Array<string>,
+  'author' : string,
+  'excerpt' : string,
+}
 export interface CatalogueRequest {
   'name' : string,
   'email' : string,
@@ -77,20 +89,28 @@ export interface _SERVICE {
   >,
   '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'addBlogPost' : ActorMethod<
+    [string, string, string, string, string, string, Array<string>, boolean],
+    bigint
+  >,
   'addProduct' : ActorMethod<
     [string, string, string, string, string, Array<string>],
     bigint
   >,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'deleteBlogPost' : ActorMethod<[bigint], boolean>,
   'deleteProduct' : ActorMethod<[bigint], boolean>,
+  'getAllBlogPostsAdmin' : ActorMethod<[], Array<BlogPost>>,
   'getAllCatalogueRequests' : ActorMethod<[], Array<CatalogueRequest>>,
   'getAllContentBlocks' : ActorMethod<[], Array<ContentBlock>>,
   'getAllInquiries' : ActorMethod<[], Array<Inquiry>>,
+  'getBlogPostBySlug' : ActorMethod<[string], [] | [BlogPost]>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getContentBlock' : ActorMethod<[string], [] | [string]>,
   'getProducts' : ActorMethod<[], Array<Product>>,
   'getProductsByCategory' : ActorMethod<[string], Array<Product>>,
+  'getPublishedBlogPosts' : ActorMethod<[], Array<BlogPost>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'markInquiryRead' : ActorMethod<[bigint], undefined>,
@@ -100,6 +120,20 @@ export interface _SERVICE {
   'submitInquiry' : ActorMethod<
     [string, string, string, string, string, string, string, InquiryType],
     undefined
+  >,
+  'updateBlogPost' : ActorMethod<
+    [
+      bigint,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      Array<string>,
+      boolean,
+    ],
+    boolean
   >,
   'updateProduct' : ActorMethod<
     [bigint, string, string, string, string, string, Array<string>],

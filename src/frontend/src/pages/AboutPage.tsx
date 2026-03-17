@@ -1,6 +1,7 @@
 import manufacturingImg from "@/assets/generated/manufacturing.dim_800x500.jpg";
 import imgFlatlay from "@/assets/generated/product-flatlay.dim_600x600.jpg";
 import PageHero from "@/components/PageHero";
+import { useGetAllContentBlocks } from "@/hooks/useQueries";
 import { motion } from "motion/react";
 
 const stats = [
@@ -13,7 +14,7 @@ const stats = [
 const expertiseCards = [
   {
     title: "Manufacturing Excellence",
-    desc: "State-of-the-art facilities in Surat equipped with advanced plating, stone-setting, and finishing machinery. Every piece undergoes rigorous quality checks before packaging.",
+    desc: "State-of-the-art facilities in Jaipur equipped with advanced plating, stone-setting, and finishing machinery. Every piece undergoes rigorous quality checks before packaging.",
   },
   {
     title: "Quality Control",
@@ -26,6 +27,17 @@ const expertiseCards = [
 ];
 
 export default function AboutPage() {
+  const { data: blocks } = useGetAllContentBlocks();
+  const getBlock = (key: string, fallback = "") =>
+    blocks?.find((b) => b.key === key)?.value || fallback;
+
+  const aboutDescription = getBlock(
+    "about_description",
+    "Founded in 2005 in Jaipur — India's jewellery capital — Gemora Global began as a small workshop with a single vision: to deliver world-class imitation jewellery at accessible price points. Over fifteen years, we've grown into a full-scale manufacturing and export operation, shipping to boutiques, wholesalers, and distributors across six continents.",
+  );
+  const aboutImageUrl = getBlock("about_image_url", "");
+  const manufacturingImageUrl = getBlock("manufacturing_image_url", "");
+
   return (
     <div>
       <PageHero
@@ -47,7 +59,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <p className="section-label mb-5">Founded in Surat</p>
+              <p className="section-label mb-5">Founded in Jaipur</p>
               <h2
                 className="font-serif text-4xl md:text-5xl mb-8 text-foreground"
                 style={{ fontWeight: 300 }}
@@ -60,17 +72,7 @@ export default function AboutPage() {
               </h2>
               <div className="gold-divider-left mb-8" />
               <p className="text-foreground/60 text-sm leading-relaxed mb-5">
-                Founded in 2005 in Surat — India's undisputed jewellery capital
-                — Gemora Global began as a small workshop with a single vision:
-                to deliver world-class imitation jewellery at accessible price
-                points.
-              </p>
-              <p className="text-foreground/60 text-sm leading-relaxed mb-5">
-                Over fifteen years, we've grown into a full-scale manufacturing
-                and export operation, shipping to boutiques, wholesalers, and
-                distributors across six continents. Our 200-strong team combines
-                traditional Indian craftsmanship with modern production
-                standards.
+                {aboutDescription}
               </p>
               <p className="text-foreground/60 text-sm leading-relaxed">
                 Every season we introduce 500+ new designs inspired by global
@@ -86,7 +88,7 @@ export default function AboutPage() {
               className="overflow-hidden"
             >
               <img
-                src={manufacturingImg}
+                src={aboutImageUrl || manufacturingImg}
                 alt="Gemora Global Manufacturing"
                 className="w-full object-cover"
                 style={{ filter: "brightness(0.9) contrast(1.05)" }}
@@ -175,6 +177,26 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Manufacturing image section */}
+      {manufacturingImageUrl && (
+        <section
+          style={{ backgroundColor: "var(--obsidian)" }}
+          className="py-16"
+        >
+          <div className="container mx-auto px-6">
+            <img
+              src={manufacturingImageUrl}
+              alt="Manufacturing Facility"
+              className="w-full max-h-96 object-cover"
+              style={{ filter: "brightness(0.9) contrast(1.05)" }}
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

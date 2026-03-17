@@ -19,6 +19,7 @@ import {
   MessageCircle,
   MessageSquare,
   Package,
+  PenSquare,
   Settings,
   ShoppingBag,
   Users,
@@ -80,6 +81,12 @@ const navItems = [
     label: "WhatsApp Leads",
     icon: MessageCircle,
     ocid: "admin_nav.whatsapp_leads_link",
+  },
+  {
+    to: "/admin/blog",
+    label: "Blog Posts",
+    icon: PenSquare,
+    ocid: "admin_nav.blog_link",
   },
   {
     to: "/admin/analytics",

@@ -3,6 +3,7 @@ import heroImg from "@/assets/generated/hero-light.dim_1920x900.jpg";
 import minimalImg from "@/assets/generated/minimal-collection.dim_600x600.jpg";
 import necklaceImg from "@/assets/generated/necklace-collection.dim_600x600.jpg";
 import { Button } from "@/components/ui/button";
+import { useGetAllContentBlocks } from "@/hooks/useQueries";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Award, Globe, Package, Users } from "lucide-react";
 import { motion } from "motion/react";
@@ -64,13 +65,28 @@ const markets = [
 ];
 
 export default function HomePage() {
+  const { data: blocks } = useGetAllContentBlocks();
+  const getBlock = (key: string, fallback = "") =>
+    blocks?.find((b) => b.key === key)?.value || fallback;
+
+  const heroTitle = getBlock("hero_title", "Premium Imitation Jewellery");
+  const heroSubtitle = getBlock(
+    "hero_subtitle",
+    "Manufacturer & Exporter from India",
+  );
+  const tagline = getBlock(
+    "tagline",
+    "Trusted by wholesalers, boutiques and distributors across Europe, UAE, USA & UK",
+  );
+  const heroImageUrl = getBlock("hero_image_url", "");
+
   return (
     <div>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${heroImg}')` }}
+          style={{ backgroundImage: `url('${heroImageUrl || heroImg}')` }}
         />
         {/* Sophisticated gradient overlay */}
         <div
@@ -101,7 +117,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
             >
-              Premium Imitation Jewellery
+              {heroTitle}
             </motion.span>
             <motion.span
               style={{ display: "block", color: "var(--gold-dark)" }}
@@ -109,15 +125,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.25 }}
             >
-              Manufacturer &amp; Exporter
-            </motion.span>
-            <motion.span
-              style={{ display: "block" }}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              from India
+              {heroSubtitle}
             </motion.span>
           </h1>
 
@@ -142,8 +150,7 @@ export default function HomePage() {
             className="text-base md:text-lg mb-10 leading-relaxed"
             style={{ color: "oklch(0.30 0.055 240)" }}
           >
-            Trusted by wholesalers, boutiques and distributors across Europe,
-            UAE, USA &amp; UK
+            {tagline}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -249,7 +256,6 @@ export default function HomePage() {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                   />
-                  {/* Hover overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
                     <span className="font-serif text-lg text-white tracking-wide">
                       {col.title}

@@ -54,6 +54,7 @@ export default function Footer() {
                   ["Why Choose Us", "/why-us"],
                   ["Global Markets", "/markets"],
                   ["Gallery", "/gallery"],
+                  ["Blog", "/blog"],
                   ["Contact", "/contact"],
                 ] as [string, string][]
               ).map(([label, to]) => (

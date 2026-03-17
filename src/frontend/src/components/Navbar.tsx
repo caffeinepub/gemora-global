@@ -13,6 +13,7 @@ const navLinks = [
   { label: "Why Us", to: "/why-us", ocid: "nav.link" },
   { label: "Markets", to: "/markets", ocid: "nav.link" },
   { label: "Gallery", to: "/gallery", ocid: "nav.link" },
+  { label: "Blog", to: "/blog", ocid: "nav.blog_link" },
   { label: "Contact", to: "/contact", ocid: "nav.contact_link" },
 ];
 
@@ -56,14 +57,14 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
               data-ocid={link.ocid}
               className="text-xs font-sans tracking-widest uppercase transition-colors duration-200 relative"
-              style={{ letterSpacing: "0.15em", color: "oklch(0.78 0.04 210)" }}
+              style={{ letterSpacing: "0.12em", color: "oklch(0.78 0.04 210)" }}
               activeProps={{ style: { color: "var(--gold)" } }}
               onMouseEnter={() => setHoveredLink(link.to)}
               onMouseLeave={() => setHoveredLink(null)}

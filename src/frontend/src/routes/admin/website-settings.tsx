@@ -8,7 +8,7 @@ import { useGetAllContentBlocks } from "@/hooks/useQueries";
 import {
   Globe,
   Home,
-  Info,
+  ImageIcon,
   MessageSquare,
   Search,
   Settings,
@@ -35,13 +35,15 @@ function Section({
 
 function Field({
   label,
+  hint,
   children,
-}: { label: string; children: React.ReactNode }) {
+}: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
       <Label className="text-xs font-medium text-gray-600 uppercase tracking-wide">
         {label}
       </Label>
+      {hint && <p className="text-xs text-gray-400">{hint}</p>}
       {children}
     </div>
   );
@@ -68,25 +70,30 @@ export default function AdminWebsiteSettings() {
   const [exportPage, setExportPage] = useState({ title: "", description: "" });
   const [seo, setSeo] = useState({ metaTitle: "", metaDesc: "", keywords: "" });
   const [catalogue, setCatalogue] = useState({ pdfUrl: "", driveUrl: "" });
+  const [images, setImages] = useState({
+    heroImageUrl: "",
+    aboutImageUrl: "",
+    manufacturingImageUrl: "",
+  });
   const [saving, setSaving] = useState(false);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: getBlock is derived from contentBlocks
   useEffect(() => {
     if (!contentBlocks) return;
     setHomepage({
-      heroTitle: getBlock("heroTitle"),
-      subtitle: getBlock("heroSubtitle"),
-      tagline: getBlock("heroTagline"),
+      heroTitle: getBlock("hero_title"),
+      subtitle: getBlock("hero_subtitle"),
+      tagline: getBlock("tagline"),
     });
     setContact({
-      phone: getBlock("phone"),
-      email: getBlock("email"),
-      address: getBlock("address"),
-      whatsapp: getBlock("whatsappNumber"),
+      phone: getBlock("contact_phone"),
+      email: getBlock("contact_email"),
+      address: getBlock("contact_address"),
+      whatsapp: getBlock("whatsapp_number"),
     });
     setExportPage({
-      title: getBlock("exportTitle"),
-      description: getBlock("exportDescription"),
+      title: getBlock("export_page_title"),
+      description: getBlock("export_page_description"),
     });
     setSeo({
       metaTitle: getBlock("metaTitle"),
@@ -94,8 +101,13 @@ export default function AdminWebsiteSettings() {
       keywords: getBlock("seoKeywords"),
     });
     setCatalogue({
-      pdfUrl: getBlock("cataloguePdfUrl"),
+      pdfUrl: getBlock("catalogue_pdf_url"),
       driveUrl: getBlock("catalogueDriveUrl"),
+    });
+    setImages({
+      heroImageUrl: getBlock("hero_image_url"),
+      aboutImageUrl: getBlock("about_image_url"),
+      manufacturingImageUrl: getBlock("manufacturing_image_url"),
     });
   }, [contentBlocks]);
 
@@ -141,7 +153,7 @@ export default function AdminWebsiteSettings() {
         transition={{ duration: 0.35 }}
       >
         <Tabs defaultValue="homepage">
-          <div className="border-b border-gray-100">
+          <div className="border-b border-gray-100 overflow-x-auto">
             <TabsList className="bg-transparent h-auto p-0 gap-0">
               {[
                 {
@@ -149,6 +161,12 @@ export default function AdminWebsiteSettings() {
                   label: "Homepage",
                   icon: Home,
                   ocid: "website_settings.homepage_tab",
+                },
+                {
+                  value: "images",
+                  label: "Images",
+                  icon: ImageIcon,
+                  ocid: "website_settings.images_tab",
                 },
                 {
                   value: "contact",
@@ -160,7 +178,7 @@ export default function AdminWebsiteSettings() {
                   value: "export",
                   label: "Export Page",
                   icon: Globe,
-                  ocid: "website_settings.seo_tab",
+                  ocid: "website_settings.export_tab",
                 },
                 {
                   value: "seo",
@@ -179,7 +197,7 @@ export default function AdminWebsiteSettings() {
                   key={tab.value}
                   value={tab.value}
                   data-ocid={tab.ocid}
-                  className="px-4 py-3 text-xs font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#C6A55C] data-[state=active]:text-[#C6A55C] text-gray-500 gap-1.5"
+                  className="px-4 py-3 text-xs font-medium rounded-none border-b-2 border-transparent data-[state=active]:border-[#C6A55C] data-[state=active]:text-[#C6A55C] text-gray-500 gap-1.5 whitespace-nowrap"
                 >
                   <tab.icon size={12} />
                   {tab.label}
@@ -191,7 +209,10 @@ export default function AdminWebsiteSettings() {
           {/* Homepage */}
           <TabsContent value="homepage" className="p-6">
             <Section title="Homepage Content">
-              <Field label="Hero Title">
+              <Field
+                label="Hero Title"
+                hint="Main headline shown in the hero section"
+              >
                 <Input
                   className={inputClass}
                   value={homepage.heroTitle}
@@ -201,24 +222,24 @@ export default function AdminWebsiteSettings() {
                   placeholder="Premium Imitation Jewellery..."
                 />
               </Field>
-              <Field label="Subtitle">
+              <Field label="Subtitle" hint="Second line of the hero headline">
                 <Input
                   className={inputClass}
                   value={homepage.subtitle}
                   onChange={(e) =>
                     setHomepage((p) => ({ ...p, subtitle: e.target.value }))
                   }
-                  placeholder="Crafted for Global Buyers"
+                  placeholder="Manufacturer & Exporter from India"
                 />
               </Field>
-              <Field label="Tagline">
+              <Field label="Tagline" hint="Supporting text below the headline">
                 <Input
                   className={inputClass}
                   value={homepage.tagline}
                   onChange={(e) =>
                     setHomepage((p) => ({ ...p, tagline: e.target.value }))
                   }
-                  placeholder="Your tagline here..."
+                  placeholder="Trusted by wholesalers..."
                 />
               </Field>
             </Section>
@@ -227,9 +248,9 @@ export default function AdminWebsiteSettings() {
                 data-ocid="website_settings.save_button"
                 onClick={() =>
                   handleSave("Homepage", {
-                    heroTitle: homepage.heroTitle,
-                    heroSubtitle: homepage.subtitle,
-                    heroTagline: homepage.tagline,
+                    hero_title: homepage.heroTitle,
+                    hero_subtitle: homepage.subtitle,
+                    tagline: homepage.tagline,
                   })
                 }
                 disabled={saving}
@@ -237,6 +258,108 @@ export default function AdminWebsiteSettings() {
                 style={{ backgroundColor: "#C6A55C", color: "#fff" }}
               >
                 {saving ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Images */}
+          <TabsContent value="images" className="p-6">
+            <Section title="Page Images">
+              <p className="text-xs text-gray-500 mb-4">
+                Paste image URLs from Google Drive, Cloudinary, or any public
+                image hosting. Leave blank to use the default built-in images.
+              </p>
+              <Field
+                label="Hero Background Image URL"
+                hint="Full URL to the hero section background image (recommended: 1920×900px)"
+              >
+                <Input
+                  data-ocid="website_settings.input"
+                  className={inputClass}
+                  value={images.heroImageUrl}
+                  onChange={(e) =>
+                    setImages((p) => ({ ...p, heroImageUrl: e.target.value }))
+                  }
+                  placeholder="https://example.com/hero.jpg"
+                />
+                {images.heroImageUrl && (
+                  <img
+                    src={images.heroImageUrl}
+                    alt="Hero preview"
+                    className="mt-2 h-20 w-full object-cover rounded border border-gray-200"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                )}
+              </Field>
+              <Field
+                label="About Page Image URL"
+                hint="Image shown on the About Us page beside the company story"
+              >
+                <Input
+                  data-ocid="website_settings.input"
+                  className={inputClass}
+                  value={images.aboutImageUrl}
+                  onChange={(e) =>
+                    setImages((p) => ({ ...p, aboutImageUrl: e.target.value }))
+                  }
+                  placeholder="https://example.com/about.jpg"
+                />
+                {images.aboutImageUrl && (
+                  <img
+                    src={images.aboutImageUrl}
+                    alt="About preview"
+                    className="mt-2 h-20 w-full object-cover rounded border border-gray-200"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                )}
+              </Field>
+              <Field
+                label="Manufacturing Image URL"
+                hint="Additional manufacturing/facility image shown on About page"
+              >
+                <Input
+                  data-ocid="website_settings.input"
+                  className={inputClass}
+                  value={images.manufacturingImageUrl}
+                  onChange={(e) =>
+                    setImages((p) => ({
+                      ...p,
+                      manufacturingImageUrl: e.target.value,
+                    }))
+                  }
+                  placeholder="https://example.com/manufacturing.jpg"
+                />
+                {images.manufacturingImageUrl && (
+                  <img
+                    src={images.manufacturingImageUrl}
+                    alt="Manufacturing preview"
+                    className="mt-2 h-20 w-full object-cover rounded border border-gray-200"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                )}
+              </Field>
+            </Section>
+            <div className="mt-5 flex justify-end">
+              <Button
+                data-ocid="website_settings.save_button"
+                onClick={() =>
+                  handleSave("Images", {
+                    hero_image_url: images.heroImageUrl,
+                    about_image_url: images.aboutImageUrl,
+                    manufacturing_image_url: images.manufacturingImageUrl,
+                  })
+                }
+                disabled={saving}
+                className="text-xs"
+                style={{ backgroundColor: "#C6A55C", color: "#fff" }}
+              >
+                {saving ? "Saving..." : "Save Images"}
               </Button>
             </div>
           </TabsContent>
@@ -272,7 +395,7 @@ export default function AdminWebsiteSettings() {
                     onChange={(e) =>
                       setContact((p) => ({ ...p, whatsapp: e.target.value }))
                     }
-                    placeholder="+917976341419"
+                    placeholder="917976341419"
                   />
                 </Field>
               </div>
@@ -293,10 +416,10 @@ export default function AdminWebsiteSettings() {
                 data-ocid="website_settings.save_button"
                 onClick={() =>
                   handleSave("Contact", {
-                    phone: contact.phone,
-                    email: contact.email,
-                    address: contact.address,
-                    whatsappNumber: contact.whatsapp,
+                    contact_phone: contact.phone,
+                    contact_email: contact.email,
+                    contact_address: contact.address,
+                    whatsapp_number: contact.whatsapp,
                   })
                 }
                 disabled={saving}
@@ -341,8 +464,8 @@ export default function AdminWebsiteSettings() {
                 data-ocid="website_settings.save_button"
                 onClick={() =>
                   handleSave("Export Page", {
-                    exportTitle: exportPage.title,
-                    exportDescription: exportPage.description,
+                    export_page_title: exportPage.title,
+                    export_page_description: exportPage.description,
                   })
                 }
                 disabled={saving}
@@ -437,7 +560,7 @@ export default function AdminWebsiteSettings() {
                 data-ocid="website_settings.save_button"
                 onClick={() =>
                   handleSave("Catalogue", {
-                    cataloguePdfUrl: catalogue.pdfUrl,
+                    catalogue_pdf_url: catalogue.pdfUrl,
                     catalogueDriveUrl: catalogue.driveUrl,
                   })
                 }
